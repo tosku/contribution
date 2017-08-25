@@ -4,3 +4,4 @@ back/
 **/*.aux
 **/*.toc
 **/*.log
+.Rproj.user
