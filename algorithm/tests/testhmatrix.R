@@ -14,9 +14,18 @@ names(md) = newnmd
 md = md[order(names(md))]
 #network effects
 mn = C$hatMatrix$NMA[,1]
-nmn = C$hatMatrix$H2bu %*% md
+#hatmatrix
+HM = C$hatMatrix$H2bu
+nmn = HM %*% md
 # test that hmatrix works
-diff = mn - nmn
+diff = all(lapply((mn - nmn), function(n){n == 0}))
+print("hatmatrix gives correct network measures")
 print(diff)
 
 
+#Check if Contribution matrix * direct effectes is 100
+CM = C$contributionMatrix
+ch2 = (CM * sign(HM)) %*% md
+test2 = all(lapply((ch2), function(n){n == 100}))
+print("Check if Contribution matrix * direct effectes is 100")
+print(test2)
