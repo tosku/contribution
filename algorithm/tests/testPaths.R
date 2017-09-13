@@ -6,17 +6,15 @@ source("../flow_contribution/R/hatmatrix.R")
 source("../flow_contribution/R/contributionmatrix.R")
 source("../flow_contribution/R/contributionrow-new.R")
 
-indata = read.csv("griselda_wide.csv",header=TRUE,sep=",")
-C = getContributionMatrix(indata,type="netwide_binary",model="random",sm="OR")
-
-# indata = read.csv2("diabetes_new.csv",header=TRUE,sep=";")
+# indata = read.csv("griselda_wide.csv",header=TRUE,sep=",")
 # C = getContributionMatrix(indata,type="netwide_binary",model="random",sm="OR")
+# 
+indata = read.csv2("diabetes_new.csv",header=TRUE,sep=";")
+C = getContributionMatrix(indata,type="netwide_binary",model="random",sm="OR")
 
 # indata = read.csv2("binary.csv",header=TRUE,sep=";")
 # C = getContributionMatrix(indata,type="netwide_binary",model="random",sm="OR")
 
-# indata = read.csv("Leucht.csv",header=TRUE,sep=";")
-# C = getContributionMatrix(indata,type="iv",model="fixed",sm="OR")
 # indata = read.csv("OSrob.csv",header=TRUE,sep=",")
 # C = getContributionMatrix(indata,type="iv",model="random",sm="OR")
 
@@ -61,7 +59,14 @@ biggestDiff = function(diffs){
 print("equivelance threshold")
 print(biggestDiff(diffs))
 xs = seq(0.01,1.5,0.01)
-plot(xs,lapply(xs,function(x){fods(diffs,x)}))
+ys = lapply(xs,function(x){fods(diffs,x)})
+print("plotting diffs")
+svg(filename="diabetes-diffs.svg", 
+    width=5, 
+    height=4, 
+    pointsize=12)
+plot(xs,ys)
+dev.off()
 
 # testRows = all(lapply(newnmd, function(n){all(getComparisonContribution(C$hatMatrix,comparison=n[1])$contribution-CM[n[1],]==0)}))
 # print("test contribution by row agrees with contribution matrix")
